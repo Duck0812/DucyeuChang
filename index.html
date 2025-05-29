@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MDucyeuChang</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="heart.png" />
+</head>
+<body>
+  <div id="wrapper">
+    <div id="btnHelp">?</div>
+
+    <div id="displayTitle" class="doNotSelect">For Chang &lt;3</div>
+
+    <img id="displayImg" class="doNotSelect" src="sunflower.gif" />
+    <div id="flowerCanvas"></div>
+    <img id="msgBackgroundEffect" src="hearts.gif" />
+
+    <div id="msgContainer">
+      <div id="leftArrow" class="arrow doNotSelect">⤷</div>
+
+      <h1 class="ml6">
+        <span class="text-wrapper">
+          <span id="noteTarget" class="letters">Loading note...</span>
+        </span>
+      </h1>
+
+      <div id="rightArrow" class="arrow doNotSelect">⤷</div>
+
+      <div id="noteDate" class="noteInfo">-- / -- / ----</div>
+      <div id="notePosition" class="noteInfo">- / -</div>
+    </div>
+
+    <div id="liveTimer">New note in: ...</div>
+
+    <div id="snackbar"></div>
+
+    <div id="helpMenu">
+      <div id="helpClose">x</div>
+      <h1>What is MDucyeuChang?</h1>
+      <p>This is a custom website to leave you a daily note!</p>
+      <p>Each day you get to see a new message from your favorite person 💖</p>
+      <br />
+      <h1>Actions</h1>
+      <p>Single click on arrow: Show next/prev note</p>
+      <p>Double click on arrow: Show first/last read note</p>
+      <p>Double click on note: Add note to favorites</p>
+      <p>Double click on image: Cycle through favorited notes</p>
+    </div>
+  </div>
+
+  <script>
+    const notes = [
+  {
+    "date": "2025-05-30",
+    "text": "Flowers for my sweetheart!!!!"
+  },
+  {
+    "date": "2025-05-31",
+    "text": "I love the way you smile when you talk with meee"
+  },
+  {
+    "date": "2025-06-01",
+    "text": "You always make my day bright and warmmmm"
+  },
+  {
+    "date": "2025-06-02",
+    "text": "You are the most amazing person i knowwww."
+  },
+  {
+    "date": "2025-06-03",
+    "text": "Please remember that I am always here for you, bbiii"
+  },
+  {
+    "date": "2025-06-04",
+    "text": "I love you so much more than you'll ever know \ud83e\udef6"
+  },
+  {
+    "date": "2025-06-05",
+    "text": "tui lun lun t\u1ef1 h\u00e0o d\u00eca b\u1ea1nnnn"
+  },
+  {
+    "date": "2025-06-06",
+    "text": "anh y\u00eau b\u00e9 Chang c\u1ee5a anh nhi\u1ec1u n\u1eafmmmmmmm."
+  }
+];
+
+    function getToday() {
+      const today = new Date();
+      return today.toISOString().split('T')[0];
+    }
+
+    function getNextMidnight() {
+      const now = new Date();
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = getNextMidnight() - now;
+      const h = Math.floor(diff / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+      document.getElementById("liveTimer").textContent = `New note in: ${h}h ${m}m ${s}s`;
+    }
+
+    function displayNote() {
+      const today = getToday();
+      const noteObj = notes.find(n => n.date === today);
+      const noteEl = document.getElementById("noteTarget");
+      const dateEl = document.getElementById("noteDate");
+      const posEl = document.getElementById("notePosition");
+
+      if (noteObj) {
+        noteEl.textContent = noteObj.text;
+        dateEl.textContent = today.split("-").join(" / ");
+        const index = notes.findIndex(n => n.date === today) + 1;
+        posEl.textContent = `${index} / ${notes.length}`;
+      } else {
+        noteEl.textContent = "📅 Not time yet for the next note!";
+        posEl.textContent = `- / ${notes.length}`;
+      }
+    }
+
+    displayNote();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
